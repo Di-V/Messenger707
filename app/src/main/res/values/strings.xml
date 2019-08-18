@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Messenger 707</string>
+    <string name="message">Message...</string>
+    <string name="send">Send</string>
+
+    <!-- Auth screen start -->
+    <string name="login">Login</string>
+    <!-- Auth screen end -->
+
+    <!-- Setting screen start -->
+    <string name="setting">Setting</string>
+    <string name="action_search">search</string>
+    <string name="chat_hint">text...</string>
+    <!-- Setting screen end -->
+
+
+</resources>
