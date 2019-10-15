@@ -1,29 +1,41 @@
-package app.di_v.messenger707.model;
+package app.di_v.messenger707.database;
+
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import java.util.Date;
 import java.util.UUID;
 
+@Entity(tableName = "messages_table")
 public class Messages {
-    private UUID mId;
-    private String mUserName;
-    private String mMessage;
-    private long mMessageTime;
-    private int mStatus;
+    @PrimaryKey    @NonNull    @ColumnInfo(name = "message_id")    private String mId;
+    @ColumnInfo(name = "user_name")    private String mUserName;
+    @ColumnInfo(name = "user_message")    private String mMessage;
+    @ColumnInfo(name = "user_message_time")    private long mMessageTime;
+    @ColumnInfo(name = "message_status")    private int mStatus;
 
-    public Messages(UUID id) {
-        mId = id;
+    public Messages() {
+        mId = UUID.randomUUID().toString();
     }
 
+    @Ignore
     public Messages(String message, String userName, int status) {
-        mId = UUID.randomUUID();
+        mId = UUID.randomUUID().toString();
         mMessage = message;
         mUserName = userName;
         mMessageTime = new Date().getTime();
         mStatus = status;
     }
 
-    public UUID getId() {
+    public String getId() {
         return mId;
+    }
+
+    public void setId(String id) {
+        mId = id;
     }
 
     public String getMessage() {
