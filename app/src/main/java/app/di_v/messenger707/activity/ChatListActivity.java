@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,13 +26,12 @@ import java.util.List;
 import app.di_v.messenger707.BottomNavigationDrawerFragment;
 import app.di_v.messenger707.MessengerAdapter;
 import app.di_v.messenger707.R;
-import app.di_v.messenger707.database.MessengerViewModel;
-import app.di_v.messenger707.database.User;
+import app.di_v.messenger707.data.MessengerViewModel;
+import app.di_v.messenger707.data.model.ListUsers;
+import app.di_v.messenger707.data.model.User;
 
 
 public class ChatListActivity extends AppCompatActivity {
-    private static final String TAG = "main";
-    public static final int AUTH_ACTIVITY_REQUEST_CODE = 0;
     public static final int NEW_CONTACT_ACTIVITY_REQUEST_CODE = 1;
     private RecyclerView mContactRecyclerView;
     private MessengerAdapter mAdapter;
@@ -45,7 +43,6 @@ public class ChatListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contact_list);
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            Log.d(TAG, " start AuthorizationActivity ");
             startActivity(new Intent(this, AuthorizationActivity.class));
             this.finish();
         } else {
@@ -57,11 +54,10 @@ public class ChatListActivity extends AppCompatActivity {
             mContactRecyclerView.setAdapter(mAdapter);
 
             mMessengerViewModel = new ViewModelProvider(this).get(MessengerViewModel.class);
-            mMessengerViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
+            mMessengerViewModel.getListAllUsers().observe(this, new Observer<List<ListUsers>>() {
                 @Override
-                public void onChanged(@Nullable final List<User> users) {
+                public void onChanged(@Nullable final List<ListUsers> users) {
                     // Update the cached copy of the words in the adapter.
-                    Log.d(TAG, "add adapter data " + users.toString());
                     mAdapter.setUsers(users);
                 }
             });
@@ -86,7 +82,6 @@ public class ChatListActivity extends AppCompatActivity {
             User user = new User(data.getStringExtra(AddUserActivity.EXTRA_REPLY));
             mMessengerViewModel.insert(user);
         } else {
-            Log.d(TAG, "main: Result code == error");
             Toast.makeText(
                     getApplicationContext(),
                     R.string.error,

@@ -9,45 +9,36 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
-import app.di_v.messenger707.database.Messages;
-import app.di_v.messenger707.database.User;
+import app.di_v.messenger707.data.model.UserMessages;
 
 
 public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final static int TYPE_CONTACT_MESSAGE = 0;
     private final static int TYPE_USER_MESSAGE = 1;
-    private List<User> mContacts;
-    private List<Messages> mMessages;
+    private UserMessages mMessagesList;
     private final LayoutInflater mInflater;
 
     public MessagesAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
     }
 
-    public void setUsers(List<User> users) {
-        mContacts = users;
-        notifyDataSetChanged();
-    }
-
-    public void serMessages(List<Messages> msg) {
-        mMessages = msg;
+    public void setUsers(UserMessages messages) {
+        mMessagesList = messages;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (mMessages.get(position).getUserName().equals(mContacts.get(0).getUserName())) {
-            return TYPE_CONTACT_MESSAGE;
-        } else return TYPE_USER_MESSAGE;
+        if (mMessagesList.getMessagesList().get(position).getStatus() == 0) {
+            return TYPE_USER_MESSAGE;
+        } else return TYPE_CONTACT_MESSAGE;
     }
 
     // сообщаем адаптеру сколько элементов
     @Override
     public int getItemCount() {
-        if (mMessages != null) {
-            return mMessages.size();
+        if (mMessagesList != null) {
+            return mMessagesList.getMessagesList().size();
         } else return 0;
     }
 
@@ -75,13 +66,15 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         if (holder instanceof ContactMessageHolder) {
             //((ContactMessageHolder) holder).mContactImgView
-            //        .setImageResource(mContacts.get(0).getUserImg());
-            ((ContactMessageHolder) holder).mContactMsgView.setText(mMessages.get(position).getMessage());
+            //        .setImageResource(mMessagesList.get(0).getUserImg());
+            ((ContactMessageHolder) holder).mContactMsgView
+                    .setText(mMessagesList.getMessagesList().get(position).getMessage());
             //((ContactMessageHolder) holder).mContactMsgStatusView.setText(mMessages.get(position).getStatus());
         } else if (holder instanceof UserMessageHolder) {
             //((UserMessageHolder) holder).mUserImgView
-            //        .setImageResource(mContacts.get(1).getUserImg());
-            ((UserMessageHolder) holder).mUserMsgView.setText(mMessages.get(position).getMessage());
+            //        .setImageResource(mMessagesList.get(1).getUserImg());
+            ((UserMessageHolder) holder).mUserMsgView
+                    .setText(mMessagesList.getMessagesList().get(position).getMessage());
             //((UserMessageHolder) holder).mUserMsgStatusView.setText(mMessages.get(position).getStatus());
         }
     }

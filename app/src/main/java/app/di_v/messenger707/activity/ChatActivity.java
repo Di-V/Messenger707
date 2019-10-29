@@ -1,7 +1,6 @@
 package app.di_v.messenger707.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,17 +12,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import app.di_v.messenger707.MessagesAdapter;
 import app.di_v.messenger707.R;
-import app.di_v.messenger707.database.MessengerViewModel;
-import app.di_v.messenger707.database.Messages;
-import app.di_v.messenger707.database.User;
+import app.di_v.messenger707.data.MessengerViewModel;
+import app.di_v.messenger707.data.model.Messages;
+import app.di_v.messenger707.data.model.UserMessages;
 
 public class ChatActivity extends AppCompatActivity {
-    private static final String TAG = "ChatActivity";
     private final static  String EXTRA_CONTACT_ID = "userId";
     private String mId;
     private EditText mMessageEditText;
@@ -43,32 +38,29 @@ public class ChatActivity extends AppCompatActivity {
         mBtnPushMsg = findViewById(R.id.btn_push_message);
         //RecyclerView
         mRecyclerView = findViewById(R.id.recycler_view_messages);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        mRecyclerView.setLayoutManager(layoutManager);
 
         mAdapter = new MessagesAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
-        List<User> users = new ArrayList<>();
-        users.add(new User(mId, "user???"));
-        users.add(new User("i"));
-        mAdapter.setUsers(users);
 
         mMessengerViewModel = new ViewModelProvider(this).get(MessengerViewModel.class);
-        mMessengerViewModel.getAllMessages().observe(this, new Observer<List<Messages>>() {
+        mMessengerViewModel.getAllMessagesFromUser(mId).observe(this, new Observer<UserMessages>() {
             @Override
-            public void onChanged(@Nullable final List<Messages> messages) {
+            public void onChanged(@Nullable final UserMessages messages) {
                 // Update the cached copy of the words in the adapter.
-                mAdapter.serMessages(messages);
+                mAdapter.setUsers(messages);
             }
         });
 
         mBtnPushMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Messages msg = new Messages(mMessageEditText.getText().toString(), "i", 1);
+                Messages msg = new Messages(mMessageEditText.getText().toString(), mId, 0);
                 mMessengerViewModel.insertMsg(msg);
+                mMessageEditText.setText("");
             }
         });
-
-        Log.d(TAG, "User id: " + mId);
     }
 }

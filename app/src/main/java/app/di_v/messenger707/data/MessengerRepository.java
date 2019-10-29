@@ -1,34 +1,38 @@
-package app.di_v.messenger707.database;
+package app.di_v.messenger707.data;
 
 import android.app.Application;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import app.di_v.messenger707.data.model.ListUsers;
+import app.di_v.messenger707.data.model.Messages;
+import app.di_v.messenger707.data.model.User;
+import app.di_v.messenger707.data.model.UserMessages;
+
 public class MessengerRepository {
 
     private UserDao mUserDao;
     private MessagesDao mMessagesDao;
-    private LiveData<List<User>> mAllUsers;
-    private LiveData<List<Messages>> mAllMessages;
+    private LiveData<UserMessages> mMessagesList;
+    private LiveData<List<ListUsers>> mUserList;
 
     public MessengerRepository(Application application) {
         MessengerRoomDatabase db = MessengerRoomDatabase.getDatabase(application);
         mUserDao = db.userDao();
         mMessagesDao = db.messagesDao();
-        mAllUsers = mUserDao.getAllUsers();
-        mAllMessages = mMessagesDao.getAllMessages();
     }
 
-    public LiveData<List<User>> getAllUsersRep() {
-        return mAllUsers;
+    public LiveData<UserMessages> getAllMessagesFromUser(String id) {
+        mMessagesList = mUserDao.getAllMessagesFromUser(id);
+        return  mMessagesList;
     }
 
-    public LiveData<List<Messages>> getAllMessages() {
-        return  mAllMessages;
+    public LiveData<List<ListUsers>> getListAllUsers() {
+        mUserList = mUserDao.getListAllUsers();
+        return mUserList;
     }
 
     public void insert (User user) {
@@ -49,7 +53,6 @@ public class MessengerRepository {
 
         @Override
         protected Void doInBackground(final User... users) {
-            Log.d("Rep:", " data for tsk: " + users.length + ";  " + users[0]);
             mAsyncTaskDao.insert(users[0]);
             return null;
         }
@@ -65,7 +68,6 @@ public class MessengerRepository {
 
         @Override
         protected Void doInBackground(final Messages... messages) {
-            Log.d("Rep:", " data for tsk: " + messages.length + ";  " + messages[0]);
             mAsyncTaskDao.insertMsg(messages[0]);
             return null;
         }

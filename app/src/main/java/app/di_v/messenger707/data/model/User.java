@@ -1,4 +1,4 @@
-package app.di_v.messenger707.database;
+package app.di_v.messenger707.data.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
