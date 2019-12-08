@@ -1,7 +1,8 @@
-package app.di_v.messenger707;
+package app.di_v.messenger707.adapters;
 
-import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,18 +10,14 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import app.di_v.messenger707.R;
 import app.di_v.messenger707.data.model.UserMessages;
-
+import app.di_v.messenger707.ui.user.UserActivity;
 
 public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final static int TYPE_CONTACT_MESSAGE = 0;
     private final static int TYPE_USER_MESSAGE = 1;
     private UserMessages mMessagesList;
-    private final LayoutInflater mInflater;
-
-    public MessagesAdapter(Context context) {
-        mInflater = LayoutInflater.from(context);
-    }
 
     public void setUsers(UserMessages messages) {
         mMessagesList = messages;
@@ -34,7 +31,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else return TYPE_CONTACT_MESSAGE;
     }
 
-    // сообщаем адаптеру сколько элементов
     @Override
     public int getItemCount() {
         if (mMessagesList != null) {
@@ -42,8 +38,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else return 0;
     }
 
-    // Вызывается, когда RecyclerView требуется новый RecyclerView.ViewHolder
-    // данного типа для представления элемента.
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
 
@@ -65,46 +59,53 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
 
         if (holder instanceof ContactMessageHolder) {
-            //((ContactMessageHolder) holder).mContactImgView
-            //        .setImageResource(mMessagesList.get(0).getUserImg());
             ((ContactMessageHolder) holder).mContactMsgView
                     .setText(mMessagesList.getMessagesList().get(position).getMessage());
-            //((ContactMessageHolder) holder).mContactMsgStatusView.setText(mMessages.get(position).getStatus());
+
+            ((ContactMessageHolder) holder).mContactImgView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = UserActivity.Companion.newIntent(
+                            ((ContactMessageHolder) holder).mContactImgView.getContext(),
+                            mMessagesList.getId());
+                    ((ContactMessageHolder) holder).mContactImgView.getContext().startActivity(intent);
+                }
+            });
         } else if (holder instanceof UserMessageHolder) {
-            //((UserMessageHolder) holder).mUserImgView
-            //        .setImageResource(mMessagesList.get(1).getUserImg());
             ((UserMessageHolder) holder).mUserMsgView
                     .setText(mMessagesList.getMessagesList().get(position).getMessage());
-            //((UserMessageHolder) holder).mUserMsgStatusView.setText(mMessages.get(position).getStatus());
+
+            ((UserMessageHolder) holder).mUserImgView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = UserActivity.Companion.newIntent(
+                            ((UserMessageHolder) holder).mUserImgView.getContext(),
+                            mMessagesList.getId());
+                    ((UserMessageHolder) holder).mUserImgView.getContext().startActivity(intent);
+                }
+            });
         }
     }
 
-    /**
-     * Holder - определяет представление для каждого элемена RecyclerView
-     */
     public class ContactMessageHolder extends RecyclerView.ViewHolder {
         private ImageView mContactImgView;
         private TextView mContactMsgView;
-        private TextView mContactMsgStatusView;
 
         public ContactMessageHolder(CardView v) {
             super(v);
             mContactImgView = v.findViewById(R.id.img_contact);
             mContactMsgView = v.findViewById(R.id.contact_message);
-            mContactMsgStatusView = v.findViewById(R.id.message_status);
         }
     }
 
     public class UserMessageHolder extends RecyclerView.ViewHolder {
         private ImageView mUserImgView;
         private TextView mUserMsgView;
-        private TextView mUserMsgStatusView;
 
         public UserMessageHolder(CardView v) {
             super(v);
             mUserImgView = v.findViewById(R.id.img_user);
             mUserMsgView = v.findViewById(R.id.user_message);
-            mUserMsgStatusView = v.findViewById(R.id.user_message_status);
         }
     }
 }

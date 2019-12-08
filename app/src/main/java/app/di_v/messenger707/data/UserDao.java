@@ -21,8 +21,8 @@ public interface UserDao {
     @Delete
     void deleteUser(User user);
 
-    @Query("SELECT * FROM user_table WHERE user_name LIKE :name")
-    List<User> getAllUsersWithName(String name);
+    @Query("SELECT * FROM user_table WHERE user_id LIKE :id")
+    LiveData<User> getUser(String id);
 
     @Query("SELECT user_id, user_name, user_img FROM user_table WHERE user_id LIKE :id")
     LiveData<UserMessages> getAllMessagesFromUser(String id);

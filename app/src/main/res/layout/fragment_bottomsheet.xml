@@ -26,7 +26,6 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
         android:text="@string/bottom_sheet_name"
-        android:textColor="@color/colorAccent"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -38,7 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:text="@string/bottom_sheet_email"
-        android:textColor="@color/colorAccent"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
