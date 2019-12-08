@@ -1,6 +1,5 @@
-package app.di_v.messenger707;
+package app.di_v.messenger707.adapters;
 
-import android.content.Context;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,25 +12,18 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import app.di_v.messenger707.activity.ChatActivity;
+import app.di_v.messenger707.R;
+import app.di_v.messenger707.ui.dialog.DialogActivity;
 import app.di_v.messenger707.data.model.ListUsers;
 
-
 public class MessengerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final static String EXTRA_CONTACT_ID = "userId";
     private List<ListUsers> mContacts;
-    private final LayoutInflater mInflater;
-
-    public MessengerAdapter(Context context) {
-        mInflater = LayoutInflater.from(context);
-    }
 
     public void setUsers(List<ListUsers> users) {
         mContacts = users;
         notifyDataSetChanged();
     }
 
-    // сообщаем адаптеру сколько элементов
     @Override
     public int getItemCount() {
         if (mContacts != null) {
@@ -56,8 +48,8 @@ public class MessengerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ((ContactHolder) holder).cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent( ((ContactHolder) holder).cardView.getContext(), ChatActivity.class);
-                intent.putExtra(EXTRA_CONTACT_ID, mContacts.get(position).getId());
+                Intent intent = DialogActivity.newIntent(((ContactHolder) holder).cardView.getContext(),
+                        mContacts.get(position).getId());
                 ((ContactHolder) holder).cardView.getContext().startActivity(intent);
             }
         });

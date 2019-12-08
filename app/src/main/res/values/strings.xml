@@ -16,23 +16,33 @@
     <string name="create_new_account">Create Account</string>
     <string name="successfully">You have successfully logged in!</string>
     <string name="sign_up">register</string>
-    <!-- Auth screen end -->
-
-    <!-- Setting screen start -->
-    <string name="setting">Setting</string>
-    <string name="action_search">search</string>
-    <string name="chat_hint">text...</string>
-    <string name="bottom_sheet_name">name</string>
-    <string name="bottom_sheet_email">email</string>
     <string name="password_reset">Forgot your password?</string>
-    <string name="error">Error!</string>
-    <string name="sign_out">Sign out</string>
     <string name="form_password">password</string>
     <string name="form_email">Email</string>
     <string name="form_user_name">Name</string>
+    <!-- Auth screen end -->
+
+    <!-- SettingActivity screen start -->
+    <string name="setting">Setting</string>
+    <string name="action_search">search</string>
+    <string name="dialog_hint">text...</string>
+    <string name="bottom_sheet_name">name</string>
+    <string name="bottom_sheet_email">email</string>
+    <string name="error">Error!</string>
+    <string name="sign_out">Sign out</string>
     <string name="contact_msg">message...</string>
     <string name="user_status">\?</string>
-    <!-- Setting screen end -->
+    <string name="search_hint">search</string>
+    <!-- SettingActivity screen end -->
 
+    <!-- About -->
+    <string name="about_title">About</string>
+    <string name="about_description"> Messenger 707 \n powered by di-v</string>
+    <string name="about_close">close</string>
+    <string name="notification_channel_id">msg_channel</string>
+    <string name="notification_title">Title</string>
+    <string name="msg_ready">Time!</string>
+    <string name="preference_notification">Enable message notifications</string>
+    <!-- About -->
 
 </resources>

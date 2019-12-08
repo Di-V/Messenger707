@@ -7,6 +7,11 @@
             android:title="string/swap_theme" />
 
         <item
+            android:id="@+id/about"
+            android:icon="@drawable/ic_about"
+            android:title="@string/about_title" />
+
+        <item
             android:id="@+id/setting"
             android:icon="@drawable/ic_settings"
             android:title="string/setting" />

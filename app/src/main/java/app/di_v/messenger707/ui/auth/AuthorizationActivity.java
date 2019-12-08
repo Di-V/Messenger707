@@ -1,4 +1,4 @@
-package app.di_v.messenger707.activity;
+package app.di_v.messenger707.ui.auth;
 
 
 import android.content.Intent;
@@ -19,8 +19,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import app.di_v.messenger707.R;
+import app.di_v.messenger707.ui.dialoglist.DialogListActivity;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -46,7 +49,7 @@ public class AuthorizationActivity extends AppCompatActivity implements View.OnC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authorization);
-        // Views
+
         mUserNameTil = findViewById(R.id.til_user_name);
         mEmailTil = findViewById(R.id.til_email);
         mPasswordTil = findViewById(R.id.til_password);
@@ -54,7 +57,6 @@ public class AuthorizationActivity extends AppCompatActivity implements View.OnC
         mUserNameField = findViewById(R.id.input_user_name);
         mEmailField = findViewById(R.id.email);
         mPasswordField = findViewById(R.id.input_password);
-        // Buttons
         mBtnSignIn = findViewById(R.id.btn_sign_in);
         mBtnSignIn.setOnClickListener(this);
         mBtnSignUp = findViewById(R.id.btn_sign_up);
@@ -95,7 +97,7 @@ public class AuthorizationActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    private void signUp(String userName, String email, String password) {
+    private void signUp(String userName, final String email, String password) {
         Log.d(TAG, "start process signUp:" + email);
 
         if (!isUserNameValid(userName) & !isEmailValid(email) & !isPasswordValid(password)) {
@@ -109,8 +111,12 @@ public class AuthorizationActivity extends AppCompatActivity implements View.OnC
             public void onComplete(@NonNull Task<AuthResult> task) {
                 Log.d(TAG, "signUpWithEmail:success");
 
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference mDatabase = database.getReference();
+                mDatabase.child("users").child(mAuth.getUid()).child("email").setValue(email);
+
                 Intent intent = new Intent(AuthorizationActivity.this,
-                        ChatListActivity.class);
+                        DialogListActivity.class);
                 startActivity(intent);
 
                 AuthorizationActivity.this.finish();
@@ -137,7 +143,7 @@ public class AuthorizationActivity extends AppCompatActivity implements View.OnC
                             Log.d(TAG, "signInWithEmail:success");
 
                             Intent intent = new Intent(AuthorizationActivity.this,
-                                    ChatListActivity.class);
+                                    DialogListActivity.class);
                             startActivity(intent);
 
                             AuthorizationActivity.this.finish();

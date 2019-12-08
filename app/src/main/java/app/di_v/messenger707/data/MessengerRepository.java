@@ -35,6 +35,10 @@ public class MessengerRepository {
         return mUserList;
     }
 
+    public LiveData<User> getUser(String id) {
+        return mUserDao.getUser(id);
+    }
+
     public void insert (User user) {
         new insertAsyncTask(mUserDao).execute(user);
     }

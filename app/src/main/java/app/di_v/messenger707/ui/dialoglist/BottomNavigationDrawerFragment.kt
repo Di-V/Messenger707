@@ -1,4 +1,4 @@
-package app.di_v.messenger707
+package app.di_v.messenger707.ui.dialoglist
 
 import android.app.Dialog
 import android.content.Intent
@@ -7,7 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import app.di_v.messenger707.activity.AuthorizationActivity
+import app.di_v.messenger707.R
+import app.di_v.messenger707.ui.AboutDialogFragment
+import app.di_v.messenger707.ui.auth.AuthorizationActivity
+import app.di_v.messenger707.ui.setting.SettingActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -26,15 +29,14 @@ class BottomNavigationDrawerFragment: BottomSheetDialogFragment() {
         super.onActivityCreated(savedInstanceState)
 
         navigation_view.setNavigationItemSelectedListener { menuItem ->
-            // Bottom Navigation Drawer menu item clicks
             when (menuItem.itemId) {
+                R.id.about -> AboutDialogFragment().show(parentFragmentManager, "about")
+                R.id.setting -> startActivity(Intent(activity, SettingActivity::class.java))
                 R.id.sign_out -> {
                     FirebaseAuth.getInstance().signOut()
                     startActivity(Intent(activity, AuthorizationActivity::class.java))
                 }
             }
-            // Add code here to update the UI based on the item selected
-            // For example, swap UI fragments here
             true
         }
 
@@ -70,7 +72,6 @@ class BottomNavigationDrawerFragment: BottomSheetDialogFragment() {
                 }
             })
         }
-
         return dialog
     }
 
